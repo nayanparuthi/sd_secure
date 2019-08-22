@@ -1,0 +1,79 @@
+{% extends 'agreement/agreement_base.html' %}
+{% block title %}Preview Agreement{% endblock %}
+	{% block content %}
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function() 
+    {
+        var status="{{status}}";
+        console.log(status)
+        if(status=="Live")
+            $('#sendbutton').removeClass('hide');
+    });
+    </script> -->
+    {% load static%}
+<script type="text/javascript" src="{% static 'verify.js' %}"></script>
+
+		<div class="box box-info" id="mainbox">
+            <div class="box-header with-border">
+              	<h3 class="box-title">Preview Agreement</h3>
+                 </div>
+            <div class="box-body">
+                 <div class="form-group">
+                       {% autoescape off %} 
+                            {{document}} 
+                       {% endautoescape %}
+                  </div>    
+            </div>
+            </div>
+            <div class="box box-info" style=" background-color: #cae2e4;" id="addsign">
+              <br>
+              <br>
+                  &nbsp&nbspAdd Signature: <input type="text" name="otp" id="sign" required style="margin-left: 3%" onblur="sign_check(this.value)">&nbsp<span style="color:red"id="errorname"></span>
+                  <br>
+            
+                  <div id="agreementdownload" style="visibility: hidden; margin-left: 10%">
+                <br>
+                  <button type="submit" >Submit</button>
+                  <br>
+                </div>
+              </div>
+                <div class="box box-info"id="generateotp" style="background-color: #cae2e4;">
+                  <br>
+                  <br>
+                  &nbsp&nbspMobile Number: <input type="text" id="mobileno" onblur="phone_check(this.value)" name="mobileno" required style="margin-left: 3%" >&nbsp<span style="color:red" id="error"></span>
+                  <br>
+                  <br>
+                  <button style=" margin-left: 10%"  type="submit" id="getcode">Get Code
+                  </button>
+                  <br>
+               <br>
+                </div>
+                <input type="hidden" id="c_id" name="variable" value="{{ created_agreement_id }}">
+                <br>
+                <script type="text/javascript">
+                  function sign_check(value)
+                  {
+                       if(value.trim()=="")
+                       {
+                          document.getElementById('errorname').innerText="Please enter the value";  
+                       } 
+                       else {
+                              document.getElementById('errorname').innerText="";
+                          }   
+                  }
+
+                  function phone_check(value)
+                  {
+                       if(value.trim()=="")
+                       {
+                          document.getElementById('error').innerText="Please enter the value";  
+                       } 
+                       else {
+                              document.getElementById('error').innerText="";
+                          }   
+                  }
+
+                </script>
+
+	{% endblock %}

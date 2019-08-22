@@ -1,0 +1,55 @@
+{% extends 'agreement/base.html' %}
+{% block title %}Master Agreements{% endblock %}
+	{% block content %}
+
+<div class="box box-info">
+            <div class="box-header with-border">
+              	<h3 class="box-title">Master agreements</h3>
+
+              	{% if messages %}
+			    <ul class="messages">
+			        {% for message in messages %}
+			            <p>{{ message }}</p>
+			        {% endfor %}
+			    </ul>
+				{% endif %}
+
+             </div>
+             <div class="box-body">
+             		<div class="table-responsive">
+					<table  class="table no-margin">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Creation Date</th>
+								<th>Updation Date</th>
+								<th>Description</th>
+								<th>Status</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% if master_agreement %}
+								{% for agreement in master_agreement %}
+							<tr>
+							
+								<td>{{agreement.name}}</td>
+								<td>{{agreement.created_date}}</td>
+								<td>{{agreement.updated_date}}</td>
+								<td>{{agreement.description}}</td>
+								<td>{{agreement.status}}</td>
+								<td><a href="{% url 'edit_agreement' agreement.id%}">Edit</a> <a href="{% url 'delete_agreement' agreement.id %}">Delete</a></td>
+							
+							{% endfor %}
+							{% else %}
+								<td>No Data to show</td>
+						{% endif %}
+						</tbody>
+					</table>
+				</div>
+				<div class="box-footer clearfix">
+						<a href="{% url 'create_agreement' %}"  class="btn btn-sm btn-info btn-flat pull-center">Create New Agreement </a>
+				</div>
+			</div>
+     {% endblock %}
+

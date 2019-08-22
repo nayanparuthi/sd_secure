@@ -1,0 +1,168 @@
+{% extends 'agreement/base.html' %}
+{% block title %}Master Agreements{% endblock %}
+    {% block content %}
+
+ {% load static%}
+<!-- <script type="text/javascript" src="{% static 'report.js' %}"></script> -->
+<div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">MIS REPORT</h3>
+              <div class="form-group">
+                            <label for="name">Select Agreement for signature</label>
+                                <select class="form-control" name="agreement" id="myinput" onchange="myFunction()" value="All">
+                                {% for agreement in master_agreement %}
+                                    <option value="{{agreement.id}}">{{agreement.name}}</option>
+                                {% endfor %}
+                                </select>
+                        </div>
+                    <div class="form-group">
+                            <label for="name">Search Agreement by Status</label>
+                                <select class="form-control" name="agreement" id="status">
+                                    <option value="activated">Activated</option>
+                                    <option value="sent">Sent</option>
+                                    <option value="signed">Signed</option>
+                                    <option value="terminate">Terminate</option>
+                                </select>
+                        </div>
+                <form action='{% url "date_search" %}' method='post'>{% csrf_token %}
+                    <label for="name">Search Agreement by Date</label>
+                    <div class="form-group">
+                        <label for="name" >Start Date</label>
+                        <input type="date" name="sdate" id="sdate" onchange="_filter()">
+                        <label for="name">End Date</label>
+                        <input type="date" name="edate" id="edate" onchange="_filter()">
+                    </div>
+                </form>
+
+
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+             </div>
+             <div class="box-body">
+                    <div class="table-responsive">
+                    <table  class="table no-margin" id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Created Date</th>
+                                <th>Updated Date</th>
+                                <th>Status</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if m_list %}
+                                {% for m in m_list %}
+                            <tr>
+                            
+                                <td>{{m.id}}</td>
+                                <td>{{m.name}}</td>
+                                <td>{{m.created_date}}</td>
+                                <td>{{m.updated_date}}</td>
+                                <td>{{m.status}}</td>
+                                <td><a id="report{{forloop.counter}}" href="" onclick="link_click(this)" data-id={{forloop.counter}}>{{m.count}}</a></td>
+                            {% endfor %}
+                            {% else %}
+                                <td>No Data to show</td>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                    <script type="text/javascript">
+                        function myFunction() {
+                          var input, filter, table, tr, td, i;
+                          input = document.getElementById("myinput");
+                          filter = input.value.toUpperCase();
+                          table = document.getElementById("myTable");
+                          tr = table.getElementsByTagName("tr");
+                          for (i = 0; i < tr.length; i++) {
+                            td = tr[i].getElementsByTagName("td")[0];
+                            console.log(td);
+                            if (td) {
+                              if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                              } else {
+                                tr[i].style.display = "none";
+                              }
+                            }       
+                          }
+                        }
+
+                        function _filter() {
+                            input = document.getElementById("myinput");
+                          filter = input.value.toUpperCase();
+                          console.log(filter);
+                              var dateFrom = new Date(document.getElementById('sdate').value);
+                              var dateTo = new Date(document.getElementById('edate').value);
+                              table = document.getElementById("myTable");
+                               var tr = table.getElementsByTagName("tr");
+                              for (i = 0; i < tr.length; i++) 
+                                {   
+                                    id = tr[i].getElementsByTagName("td")[0];
+                                    td = tr[i].getElementsByTagName("td")[2];
+                                    if(filter==1)
+                                    { console.log("1");
+                                        if (td) 
+                                        {console.log("2");
+                                            var date=new Date(td.innerHTML);
+                                               console.log(date);
+                                                    if(dates.inrange(date,dateFrom,dateTo))
+                                                    {
+                                                        console.log("3");
+                                                        tr[i].style.display = "";
+                                                    }
+                                                    else
+                                                    {
+                                                        console.log("4");
+                                                        tr[i].style.display = "none";
+                                                    }
+                                        }
+                                    }
+                                    else
+                                    {    console.log("5"); 
+                                        if (td)
+                                        {
+                                            console.log("6");
+                                            if(id)
+                                            {
+                                                console.log("7");
+                                                var date=new Date(td.innerHTML);
+                                                console.log(date);
+                                                    if(date>=dateFrom && date<=dateTo && (id.innerHTML.toUpperCase().indexOf(filter) > -1))
+                                                    {
+                                                        console.log("8");
+                                                        tr[i].style.display = "";
+                                                    }
+                                                    else
+                                                    {
+                                                        tr[i].style.display = "none";
+                                                    }
+                                            }
+                                        }
+                                    }
+                                }
+                                                 
+                            }
+
+                    function link_click(elem){
+                        console.log("click");
+                        var id=$(elem).attr('id');
+                        console.log(id);
+                        var sdate=document.getElementById('sdate').value;
+                        var edate=document.getElementById('edate').value;
+                        var status=document.getElementById('status').value;
+                        var agreement_type=document.getElementById('myinput').value;
+                        document.getElementById(id).href="/status?" + "sdate="+ sdate +"&edate="+ edate +"&status="+status + "&agreement_type="+agreement_type
+                    }
+                              
+                    </script>
+                </div>
+            </div>
+     {% endblock %}
+

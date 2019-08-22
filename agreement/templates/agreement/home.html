@@ -1,0 +1,28 @@
+{% extends 'agreement/base.html' %}
+{% block title %}Digital Agreements{% endblock %}
+	{% block content %}
+
+	<div class="box box-info">
+            <div class="box-header with-border">
+              	<h3 class="box-title">Digital Agreements</h3>
+             </div>
+             <div class="box-body">
+                	<p>
+                		Hello,
+                		<div>Welcome to Online Agreement Module</div>
+                		<div>Select any one of these</div>
+                	</p>
+                	<ul>
+                    {% if perms.agreement.view_masteragreement %}
+                  		<li><a href="{% url 'choose_magreement' %}">Master Agreements</a></li>
+                    {% endif %}
+                    {% if perms.agreement.view_createdagreement %}
+                  		<li><a href="{% url 'created_agreements' %}">Create Agreement for signature</li>
+                    {% endif %}
+                    {% if perms.agreement.view_createdagreement %}
+                		<li><a href="{% url 'show_cagree' %}">Status of Agreements</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'mis_report' %}">MIS REPORT</a></li>
+              </div>
+     </div>       
+	{% endblock %}

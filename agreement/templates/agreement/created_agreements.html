@@ -1,0 +1,97 @@
+{% extends 'agreement/base.html' %}
+{% block title %}Master Agreements{% endblock %}
+	{% block content %}
+
+<div class="box box-info">
+            <div class="box-header with-border">
+              	<h3 class="box-title">Create Agreement for Signature</h3>
+
+     			<div class="box-tools pull-right">
+                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                	</button>
+                	<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                	</button>
+                </div>
+             </div>
+
+             {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+             <div class="box-body">
+                <form action="{% url 'create_document' %}" method="post">{% csrf_token %}
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="name">Select Agreement for signature</label>
+                                <select class="form-control" name="agreement">
+                                {% for agreement in master_agreement %}
+                                    <option value="{{agreement.id}}">{{agreement.name}}</option>
+                                {% endfor %}
+                                </select>
+                        </div>
+                    </div>
+                 
+                 <div class="form-group">
+                    <button class="btn btn-primary">Create Document</button>
+                 </div>
+             </form>
+             <label for="name">Created Agreements</label>
+             <div class="table-responsive">
+                <table class="table no-margin">
+                    <thead>
+                        <tr>
+                            <th>Creation Date</th>
+                            <th>Agreement Type</th>
+                            <th>Name</th>
+                            <th>Email Id</th>
+                            <th>Status</th>
+                            <th>Address</th>
+                            <th>Phone Number</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if agreement_set %}
+                        {% for master_created_set in agreement_set %}
+                        <tr>
+                            <td>{{master_created_set.0}}</td>
+                            <td>{{master_created_set.1}}</td>
+                            <td>{{master_created_set.2}}</td>
+                            <td>{{master_created_set.3}}</td>
+                            <td>{{master_created_set.4}}</td>
+                            <td>{{master_created_set.5}}</td>
+                            <td>{{master_created_set.6}}</td>
+                            <td>
+                                <a href="{% url 'delete_cagreement' master_created_set.8 %}">Delete</a>
+                                <a href="{% url 'edit_document' master_created_set.8 %}">Edit</a>
+                            </td>    
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                            <td>No data to show </td>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+             </div>
+
+             <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+              <ul class="pagination">
+                 {% if agreement_set.has_previous %}
+                <li class="paginate_button previous" id="example2_previous"><a href="?page={{ agreement_set.previous_page_number }}" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a></li>
+                {% endif %}
+                <li class="paginate_button "><a href="?page=1" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a></li>
+                <li class="paginate_button "><a href="?page=2" aria-controls="example2" data-dt-idx="5" tabindex="0">2</a></li>
+                {% if agreement_set.has_next %}
+                <li class="paginate_button "><a href="?page={{ agreement_set.next_page_number }}" aria-controls="example2" data-dt-idx="5" tabindex="0">Next</a></li>
+                <li class="paginate_button "><a href="?page={{ agreement_set.paginator.num_pages }}" aria-controls="example2" data-dt-idx="5" tabindex="0">Last</a></li>
+                {% endif %}
+              </ul>
+            </div>  
+             
+            </div>
+    {% endblock %}

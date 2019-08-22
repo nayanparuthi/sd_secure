@@ -1,0 +1,120 @@
+{% extends 'agreement/base.html' %}
+{% block title %}Edit Agreement{% endblock %}
+	{% block content %}
+
+        <script type="text/javascript">        
+            $('select option[value="15"]').attr("selected",true);
+        $(document).ready(function(){
+            $("#magreement").on("change",function(){
+                var val=document.getElementById('magreement')
+                console.log(val)
+                //getting the value of selected agreement
+                agreementid=val.options[val.selectedIndex].value
+                console.log(agreementid)
+                $.ajax ({
+                type:'POST',
+                url: "load_runtime_fields",
+                data:{ 'mid':agreementid },
+                success: function(data)
+                         {
+                            // console.log(data[0]['field'])
+                            // console.log(data.length)
+                            var newcontent = '';
+                            $('#name').removeAttr('value');
+                            $('#Email').removeAttr('value');
+                            $('#address').removeAttr('value');
+                            $('#phone').removeAttr('value');
+                            $('#signature').removeAttr('value');
+                            $('#document').removeAttr('value');
+                            CKEDITOR.instances.document.setData('');
+                            //accessing array of run time fields according to the master agreement choosen.
+                            for(i = 0; i < data.length; i++)
+                            {
+                                newcontent+='<label for="name">'+ data[i]['field'] + '</label>';
+                                //creating input elements of run time fields.
+                                newcontent += '<input class = "form-control" type = "text" name ="' + data[i]['field'] + '" id ="'+data[i]['field'] + '">';
+
+                            }
+                            console.log(newcontent);
+                            //replacing the previous fields with the newly loaded run time fields.
+                            $('#prevpage').html(newcontent); 
+                         } 
+                });
+            });
+        });
+        </script>
+		<div class="box box-info">
+            <div class="box-header with-border">
+              	<h3 class="box-title">Edit your Agreement</h3>
+              	<div class="box-tools pull-right">
+                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                	</button>
+                	<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                	</button>
+                </div>
+            </div>
+            <form role="form" action="{% url 'edit_document' cagreement.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}    
+			<div class="box-body">
+						<div class="form-group">
+							<label for="name">Select Agreement for signature</label>
+                                <select id="magreement" class="form-control" name="agreement">
+                                {% for agreement in master_agreement %}
+                                    <option value="{{agreement.id}}">{{agreement.name}}</option>
+                                {% endfor %}
+                                </select>
+						</div> 
+				        <div class="form-group">
+                    		<label for="name">NAME:</label>
+                    		<input class="form-control" type="text" name="name" id="name" value="{{cagreement.user}}">
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="Email">Email</label>
+                    		<input class="form-control" type="text" name="Email" id="Email" value="{{cagreement.email}}">
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="address">Address:</label>                    		
+                    		<input class="form-control" type="text" name="address" id="address" value="{{cagreement.address}}">
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="phone">Phone Number:</label>                    		
+                    		<input class="form-control" type="text" name="phone" id="phone" value="{{cagreement.phone}}">
+                    	</div>
+
+                    	<div class="form-group">
+                    		<label for="name">Signature:</label>
+                    		<input type="file" name="signature" id="signature" value="{{cagreement.signature}}">
+                    	</div>
+
+                        <div class="form-group" id="prevpage">
+                            {% for field,value in edit_fields_pair %}
+                            <label for="name">{{ field }}</label>
+                                 <input class="form-control" type="text" name="{{ field }}" id="{{ field }}" value="{{ value }}"><br/>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group" id="editpage">
+                            <label for="content">Agreement Document</label>
+                            <textarea class="form-control" name="document" id = 'document' name="document">
+                            
+                                {{cagreement.document|linebreaks}}
+                            
+                            </textarea>
+                            <script>
+                            // Replace the <textarea id="editor1"> with a CKEditor
+                            // instance, using default configuration.
+                            CKEDITOR.replace( 'document' );
+                            CKEDITOR.config.autoParagraph = false;
+                            CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+                            shiftEnterMode: CKEDITOR.ENTER_P
+                            </script>
+                        </div>
+                </form> 
+
+            	<div class="box-footer">
+					<input type="submit" class="btn btn-primary" value="Update" />
+				</div>
+            </div>   
+        </div>
+        <!-- <div id="createpage">
+            </div> -->
+	{% endblock %}

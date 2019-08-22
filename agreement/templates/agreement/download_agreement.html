@@ -1,0 +1,19 @@
+{% extends 'agreement/agreement_base.html' %}
+{% block title %}Preview Agreement{% endblock %}
+	{% block content %}
+
+    <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Thankyou for signing the agreement</h3>
+             </div>
+             <div class="box-body">
+                  <p>
+                    Hello,
+                    <div>You can download the agreement from the link</div>
+                    <div><a href="{% url 'generatepdf' c_id %}">Download the agreement</a></div>
+                  </p>
+                </div>
+              </div>
+	{% endblock %}
+
+   

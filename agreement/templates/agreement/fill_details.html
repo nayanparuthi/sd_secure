@@ -1,0 +1,78 @@
+{% extends 'agreement/base.html' %}
+{% block title %}
+	Created Agreements
+{% endblock %}
+	{% block content %}
+
+<div class="box box-info">
+            <div class="box-header with-border">
+              	<h3 class="box-title"> Create Agreement for Signature</h3>
+
+     			<div class="box-tools pull-right">
+                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                	</button>
+                	<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                	</button>
+                </div>
+             </div>
+        <form role="form" action="{% url 'fill_details' agreement.id %}" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+            <div class="box-body">
+                <span class="info-box-open">
+                    <div class="info-box-content">
+                        Please fill the details below
+                      </div>
+                    <div class="info-box-content">
+                        {{ agreement.name }}
+                    </div>
+                    <div class="info-box-content">
+                    	
+                    	<div class="form-group">
+                    		<label for="name">NAME:</label>
+                    		<input class="form-control" type="text" name="name" id="name">
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="Email">Email</label>
+                    		<input class="form-control" type="text" name="Email" id="Email">
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="address">Address:</label>                    		
+                    		<input class="form-control" type="text" name="address" id="address">
+                    	</div>
+
+                    	<div class="form-group">
+                    		<label for="name">Signature:</label>
+                    		<input type="file" name="signature" id="signature">
+                    	</div>
+
+                        <div class="form-group">
+                            <label for="name">Status</label>
+                            <select id="status" name="status">
+                                <option value="activated">Activated</option>
+                                <option value="deactivated">Deactivated</option>
+                            </select>
+                        </div>
+
+                        <!-- <div class="form-group">
+                            <label for="name">Termination Date</label>
+                            <input class="form-control" type="date" name="termination_date" id="termination_date">
+                        </div> -->
+
+                        <div class="form-group">
+
+                            {% for field in edit_fields %}
+
+                                {% if field != "" %}
+                            <label for="name">{{ field }}</label>
+                            <input class="form-control" type="text" name="{{ field }}" id="{{ field }}"><br/>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div> 
+                </span>
+            </div>
+            <div class="box-footer">
+				<input type="submit" class="btn btn-primary" value="Submit details" />
+			</div>
+		</form>
+        {% endblock %}

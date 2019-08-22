@@ -1,0 +1,15 @@
+{% extends 'agreement/agreement_base.html' %}
+{% block title %}Preview Agreement{% endblock %}
+{% block content %}
+{% load static%}
+<script type="text/javascript" src="{% static 'verify.js' %}"></script>
+				<div class="box box-info" style=" background-color: #cae2e4;">
+                <h5 id="txt" class="box-title" style="margin: 3%">Code has been sent to {{mobile_no}}
+                <button class="btn btn-default" onclick="window.location.href='/preview/{{key}}'"><i class="glyphicon glyphicon-pencil"></i></button></h5>
+                  <input type="text" name="otp" id="otp" value="Enter the OTP" onfocus="this.value=''" required style="margin: 3%">
+                  <button type="button" id="confirm" value={{otp}}>Confirm</button>
+                  <h5 style="margin: 3%" id="txt" class="box-title">Click to receive another OTP&nbsp <button type="submit" id="resend" value={{mobile_no}}>Resend</button></h5>
+                  <br>
+                  <br>
+                </div> 
+{% endblock %}
