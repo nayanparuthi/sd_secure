@@ -31,6 +31,9 @@ class MasterAgreementAdminForm(forms.ModelForm):
         }
 
 class MasterAgreementAdmin(admin.ModelAdmin):
+	class Media:
+		js=('toggle.js',)
+		css={'all': ('admin/css/admin.css',),}
 	list_display=('category','name','created_date','updated_date','description','is_Status')
 	list_filter=('created_date','status')
 	search_fields=('name','description',)

@@ -24,7 +24,7 @@ class MasterAgreement(models.Model):
 
 	class Meta:
 
-		db_table = '{0}_{1}_{2}'.format(settings.DB_TABLE_PREFIX,'agreement','MasterAgreement')
+		db_table = '{0}_{1}_{2}'.format(settings.DB_TABLE_PREFIX,'agreement','masteragreement')
 
 		permissions = (
 				('view_masteragreement', 'Can view songdew master agreement'),
@@ -55,7 +55,7 @@ class CreatedAgreement(models.Model):
 
 	class Meta:
 
-		db_table = '{0}_{1}_{2}'.format(settings.DB_TABLE_PREFIX,'agreement','CreatedAgreement')
+		db_table = '{0}_{1}_{2}'.format(settings.DB_TABLE_PREFIX,'agreement','createdagreement')
 
 		permissions = (
 				('view_createdagreement', 'Can view songdew created agreement'),
