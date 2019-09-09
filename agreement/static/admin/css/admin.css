@@ -1,0 +1,11 @@
+.iconNo,
+.iconYes,
+.green .iconNo,
+.red .iconYes {
+	display: none;
+}
+
+.green .iconYes,
+.red .iconNo {
+	display: block;
+}
