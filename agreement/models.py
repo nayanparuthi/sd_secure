@@ -10,6 +10,10 @@ from django.conf import settings
 
 
 class MasterAgreement(models.Model):
+
+	CATEGORY_CHOICES=[('tv','TV'),('music','Music')]
+
+	category			= models.CharField(choices=CATEGORY_CHOICES,max_length=255)
 	name				= models.CharField(max_length=255)
 	created_date		= models.DateField(auto_now_add=True)
 	updated_date		= models.DateField(auto_now=True)
